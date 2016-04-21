@@ -12,7 +12,7 @@ namespace ur_kinematics {
       return (x > 0) - (x < 0);
     }
     const double PI = M_PI;
-
+/*
     //#define UR10_PARAMS
     #ifdef UR10_PARAMS
     const double d1 =  0.1273;
@@ -25,13 +25,13 @@ namespace ur_kinematics {
 
     //#define UR5_PARAMS
     #ifdef UR5_PARAMS
-    const double d1 =  0.089159;
+*/    const double d1 =  0.089159;
     const double a2 = -0.42500;
     const double a3 = -0.39225;
     const double d4 =  0.10915;
     const double d5 =  0.09465;
     const double d6 =  0.0823;
-    #endif
+    /*#endif
     
     //#define UR3_PARAMS
     #ifdef UR3_PARAMS
@@ -42,6 +42,7 @@ namespace ur_kinematics {
     const double d5 =  0.08535;
     const double d6 =  0.0819;
     #endif
+    */
   }
 
   void forward(const double* q, double* T) {
@@ -52,6 +53,7 @@ namespace ur_kinematics {
     double s5 = sin(*q), c5 = cos(*q); q++;
     double s6 = sin(*q), c6 = cos(*q); 
     double s234 = sin(q234), c234 = cos(q234);
+    double *To=T;
     *T = ((c1*c234-s1*s234)*s5)/2.0 - c5*s1 + ((c1*c234+s1*s234)*s5)/2.0; T++;
     *T = (c6*(s1*s5 + ((c1*c234-s1*s234)*c5)/2.0 + ((c1*c234+s1*s234)*c5)/2.0) - 
           (s6*((s1*c234+c1*s234) - (s1*c234-c1*s234)))/2.0); T++;
@@ -74,6 +76,10 @@ namespace ur_kinematics {
     *T = (d1 + (d6*(c234*c5-s234*s5))/2.0 + a3*(s2*c3+c2*s3) + a2*s2 - 
          (d6*(c234*c5+s234*s5))/2.0 - d5*c234); T++;
     *T = 0.0; T++; *T = 0.0; T++; *T = 0.0; T++; *T = 1.0;
+
+    //HACK TO HAVE A 180deg rotation on the base by Joao
+    for (int i=0;i<8;i++) To[i]*=-1;
+
   }
 
   void forward_all(const double* q, double* T1, double* T2, double* T3, 
@@ -88,6 +94,7 @@ namespace ur_kinematics {
     double s234 = sin(q234), c234 = cos(q234);
 
     if(T1 != NULL) {
+      double *To=T1;
       *T1 = c1; T1++;
       *T1 = 0; T1++;
       *T1 = s1; T1++;
@@ -104,6 +111,10 @@ namespace ur_kinematics {
       *T1 = 0; T1++;
       *T1 = 0; T1++;
       *T1 = 1; T1++;
+
+    //HACK TO HAVE A 180deg rotation on the base by Joao
+        for (int i=0;i<8;i++) To[i]*=-1;
+
     }
 
     if(T2 != NULL) {
