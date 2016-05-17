@@ -348,7 +348,7 @@ namespace ur_kinematics {
             if(fabs(q4[k]) < ZERO_THRESH)
               q4[k] = 0.0;
             else if(q4[k] < 0.0) q4[k] += 2.0*PI;
-            q_sols[num_sols*6+0] = q1[i];    q_sols[num_sols*6+1] = q2[k]; 
+            q_sols[num_sols*6+0] = q1[i]+PI;    q_sols[num_sols*6+1] = q2[k]; 
             q_sols[num_sols*6+2] = q3[k];    q_sols[num_sols*6+3] = q4[k]; 
             q_sols[num_sols*6+4] = q5[i][j]; q_sols[num_sols*6+5] = q6; 
             num_sols++;
