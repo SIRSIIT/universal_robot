@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <xacro:include filename="$(find ur_description)/urdf/ur.transmission.xacro" />
+  <xacro:include filename="$(find ur_description)/urdf/ur.transmission_with_ns.xacro" />
   <xacro:include filename="$(find ur_description)/urdf/ur.gazebo.xacro" />
 
   <property name="pi" value="3.14159265" />
@@ -204,10 +204,12 @@
       <origin xyz="0.0 0.0 ${forearm_length}" rpy="0.0 ${pi / 2.0} 0.0" />
       <axis xyz="0 1 0" />
       <xacro:unless value="${joint_limited}">
-        <limit lower="${-2.0 * pi}" upper="${2.0 * pi}" effort="28.0" velocity="3.2"/>
+        <limit lower="${-2.0 * pi}" upper="${2.0 * pi}" effort="28.0" acceleration="1.0" velocity="3.2"/>
+        <!--safety_controller k_position="5.0"  k_velocity="0.5" /-->
       </xacro:unless>
       <xacro:if value="${joint_limited}">
-        <limit lower="${-pi}" upper="${pi}" effort="28.0" velocity="3.2"/>
+        <limit lower="${-pi}" upper="${pi}" effort="28.0" acceleration="1.0" velocity="3.2"/>
+        <!--safety_controller k_position="5.0"  k_velocity="0.5" /-->
       </xacro:if>
       <dynamics damping="0.0" friction="0.0"/>
     </joint>
@@ -237,10 +239,12 @@
       <origin xyz="0.0 ${wrist_1_length} 0.0" rpy="0.0 0.0 0.0" />
       <axis xyz="0 0 1" />
       <xacro:unless value="${joint_limited}">
-        <limit lower="${-2.0 * pi}" upper="${2.0 * pi}" effort="28.0" velocity="3.2"/>
+        <limit lower="${-2.0 * pi}" upper="${2.0 * pi}" effort="28.0" acceleration="1.0" velocity="3.2"/>
+        <!--safety_controller k_position="5.0"  k_velocity="0.5" /-->
       </xacro:unless>
       <xacro:if value="${joint_limited}">
-        <limit lower="${-pi}" upper="${pi}" effort="28.0" velocity="3.2"/>
+        <limit lower="${-pi}" upper="${pi}" effort="28.0" acceleration="1.0" velocity="3.2"/>
+        <!--safety_controller k_position="5.0"  k_velocity="0.5" /-->
       </xacro:if>
       <dynamics damping="0.0" friction="0.0"/>
     </joint>
@@ -270,10 +274,12 @@
       <origin xyz="0.0 0.0 ${wrist_2_length}" rpy="0.0 0.0 0.0" />
       <axis xyz="0 1 0" />
       <xacro:unless value="${joint_limited}">
-        <limit lower="${-2.0 * pi}" upper="${2.0 * pi}" effort="28.0" velocity="3.2"/>
+        <limit lower="${-2.0 * pi}" upper="${2.0 * pi}" effort="28.0" acceleration="1.0" velocity="3.2"/>
+        <!--safety_controller k_position="5.0"  k_velocity="0.5" /-->
       </xacro:unless>
       <xacro:if value="${joint_limited}">
-        <limit lower="${-pi}" upper="${pi}" effort="28.0" velocity="3.2"/>
+        <limit lower="${-pi}" upper="${pi}" effort="28.0" acceleration="1.0" velocity="3.2"/>
+        <!--safety_controller k_position="5.0"  k_velocity="0.5" /-->
       </xacro:if>
       <dynamics damping="0.0" friction="0.0"/>
     </joint>
@@ -312,8 +318,8 @@
       </collision>
     </link>
 
-    <xacro:ur_arm_transmission prefix="${prefix}" />
-    <xacro:ur_arm_gazebo prefix="${prefix}" />
+    <xacro:ur_arm_transmission prefix="${prefix}" name="ur5" />
+    <xacro:ur_arm_gazebo prefix="${prefix}" name="ur5"/>
 
     <!-- ROS base_link to UR 'Base' Coordinates transform -->
     <link name="${prefix}base"/>
